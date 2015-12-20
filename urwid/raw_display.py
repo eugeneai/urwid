@@ -834,7 +834,10 @@ class Screen(BaseScreen, RealTerminal):
         try:
             for l in o:
                 if isinstance(l, bytes) and PYTHON3:
-                    l = l.decode('utf-8')
+                    try:
+                        l = l.decode('utf-8')
+                    except UnicodeDecodeError:
+                        l = repr(l)
                 self.write(l)
             self.flush()
         except IOError as e:
